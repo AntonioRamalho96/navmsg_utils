@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package rinex_manager;
+
+enum RinexNavRecordType {
+  GPS_LNAV     = 0;
+  GALILEO_FNAV = 1;
+  GALILEO_INAV = 2;
+}
+
+enum GalileoDataSource {
+  INAV_E1     = 0;
+  INAV_E5     = 1;
+  INAV_MERGED = 2;
+  FNAV        = 3;
+  INVALID     = 4;
+}
+
+message GpsLnavExtra {
+  int32  codes_on_l2    = 1;
+  int32  gps_week       = 2;
+  int32  l2_p_data_flag = 3;
+  double sv_accuracy    = 4;
+  int32  sv_health      = 5;
+  double t_gd           = 6;
+  int32  iodc           = 7;
+  int32  fit_interval   = 8;
+}
+
+message GalileoExtra {
+  GalileoDataSource  data_source      = 1;
+  bool               clock_for_e5a_e1 = 2;
+  int32              gal_week         = 3;
+  double             bgd_e5a_e1       = 4;
+  double             bgd_e5b_e1       = 5;
+  RinexNavRecordType type             = 6;
+}
+
+message RinexNavRecord {
+  // epoch
+  int32  svid   = 1;
+  int32  t_tm   = 2;
+  int32  year   = 3;
+  int32  month  = 4;
+  int32  day    = 5;
+  int32  hour   = 6;
+  int32  minute = 7;
+  double second = 8;
+
+  // GpsLnavGalileoCommon
+  double sv_clock_bias       = 9;
+  double sv_clock_drift      = 10;
+  double sv_clock_drift_rate = 11;
+  int32  iode                = 12;
+  double C_rs                = 13;
+  double Delta_n             = 14;
+  double M0                  = 15;
+  double C_uc                = 16;
+  double e                   = 17;
+  double C_us                = 18;
+  double sqrt_a              = 19;
+  int32  toe                 = 20;
+  double C_ic                = 21;
+  double OMEGA0              = 22;
+  double C_is                = 23;
+  double i0                  = 24;
+  double C_rc                = 25;
+  double omega               = 26;
+  double OMEGA_dot           = 27;
+  double i_dot               = 28;
+
+  // constellation-specific
+  oneof record {
+    GpsLnavExtra gps     = 29;
+    GalileoExtra galileo = 30;
+  }
+}
