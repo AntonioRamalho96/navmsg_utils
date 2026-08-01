@@ -7,3 +7,4 @@ pip install protobuf
 pip install pybind11
 make
 make test
+make wheel

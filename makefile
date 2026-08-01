@@ -1,6 +1,7 @@
 # Makefile
 
 BLD_DIR=./bld
+DIST_DIR=./dist
 
 # Protob codegen
 RINEX_PROTO_DIR = ./proto
@@ -31,6 +32,11 @@ PY_I_FILE=nav_utils.pyi
 # Rules
 all: $(SHARED_LIB) $(GENERATED_PROTO) $(BLD_DIR)/$(PY_I_FILE)
 
+wheel: all 
+	mkdir -p $(DIST_DIR)
+	python3 -m pip wheel . --no-deps -w $(DIST_DIR)
+	rm -rf build
+
 $(GENERATED_PROTO): $(RINEX_PROTO)
 	mkdir -p $(BLD_DIR)
 	protoc -I$(RINEX_PROTO_DIR) --cpp_out=$(BLD_DIR) --python_out=$(BLD_DIR) --pyi_out=$(BLD_DIR) $(RINEX_PROTO)
@@ -45,7 +51,9 @@ $(BLD_DIR)/$(PY_I_FILE): $(PY_I_DIR)/$(PY_I_FILE)
 
 
 clean:
-	rm -rf $(BLD_DIR)
+	rm -rf $(BLD_DIR) $(DIST_DIR) build *.egg-info
+
+.PHONY: all clean test wheel
 
 test:
 	.venv/bin/python ./tst/test_word_serializer.py

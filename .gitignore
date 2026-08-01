@@ -1,6 +1,7 @@
 __pycache__
-*.so
-*_pb2.*
-*.pb.*
+bld
+build
+dist
+*.egg-info
 .venv
 compile_commands.json
