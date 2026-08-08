@@ -81,7 +81,7 @@ class GalileoEncoder:
         Deinterleave INAV bits that were interleaved with the 8x30 block interleaver.
 
         Args:
-            input (str): Interleaved bit string (series of '0'/'1') of length 240.
+            input (str): Interleaved bit string (string of '0'/'1') of length 240.
 
         Returns:
             str: Deinterleaved bit string, same length as input.
@@ -98,5 +98,20 @@ class GalileoEncoder:
 
         Returns:
             str: Deinterleaved bit string, same length as input.
+        """
+        pass
+
+
+class Crc:
+    @classmethod
+    def crc24(cls, inout : str) -> str:
+        """
+        Computes a 24 bits CRC as per the galileo ICD
+
+        Args:
+            input (str): Protected data (string of '0'/'1').
+
+        Returns:
+            str: 24 bit crc (string of '0'/'1')
         """
         pass

@@ -3,6 +3,7 @@
 
 #include "word_serializer.hpp"
 #include "encoder.hpp"
+#include "crc.hpp"
 
 namespace py = pybind11;
 
@@ -17,4 +18,6 @@ PYBIND11_MODULE(nav_utils, m) {
         .def_static("deinterleave_fnav", &Encoder::deinterleave_fnav)
         .def_static("interleave_inav", &Encoder::interleave_inav)
         .def_static("deinterleave_inav", &Encoder::deinterleave_inav);
+    py::class_<Crc>(m, "Crc")
+        .def_static("crc24", &Crc::crc24);
 }

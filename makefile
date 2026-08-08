@@ -22,6 +22,8 @@ CPP_SRCS = $(CPP_SRC_DIR)/nav_utils.cpp \
            $(CPP_SRC_DIR)/word_serializer.cpp \
            $(CPP_SRC_DIR)/word_definition.cpp \
            $(CPP_SRC_DIR)/encoder.cpp \
+           $(CPP_SRC_DIR)/crc.cpp \
+           $(CPP_SRC_DIR)/conversions.cpp \
            $(BLD_DIR)/$(RINEX_PROTO_CC)
 SHARED_LIB = $(BLD_DIR)/nav_utils$(shell python3-config --extension-suffix)
 
@@ -56,6 +58,7 @@ clean:
 .PHONY: all clean test wheel
 
 test:
-	.venv/bin/python ./tst/test_word_serializer.py
-	.venv/bin/python ./tst/test_encoder.py
+	for test_file in ./tst/test_*.py; do \
+		.venv/bin/python "$$test_file"; \
+	done
 	@echo "\n passed!"
