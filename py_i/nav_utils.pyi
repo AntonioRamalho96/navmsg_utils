@@ -9,6 +9,13 @@ Usage:
     >>> binary_string = serializer.serialize(serialized_record)
 """
 
+from typing import List
+
+class RinexManager:
+    def __init__(self) -> None: ...
+    def load(self, rinex_path: str) -> None: ...
+    def get_serialized_rinex_records(self) -> List[bytes]: ...
+
 class WordSerializer:
     def __init__(self, csv_path : str):
         """

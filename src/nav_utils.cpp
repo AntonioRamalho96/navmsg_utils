@@ -4,6 +4,7 @@
 #include "word_serializer.hpp"
 #include "encoder.hpp"
 #include "crc.hpp"
+#include "rinex_manager/rinex_manager.hpp"
 
 namespace py = pybind11;
 
@@ -20,4 +21,15 @@ PYBIND11_MODULE(nav_utils, m) {
         .def_static("deinterleave_inav", &Encoder::deinterleave_inav);
     py::class_<Crc>(m, "Crc")
         .def_static("crc24", &Crc::crc24);
+
+    py::class_<RinexManager>(m, "RinexManager")
+        .def(py::init<>())
+        .def("load", &RinexManager::load)
+        .def("get_serialized_rinex_records", [](RinexManager &mgr) {
+            std::vector<py::bytes> serialized;
+            for (const auto &record : mgr.get_rinex_records()) {
+                serialized.emplace_back(record.SerializeAsString());
+            }
+            return serialized;
+        });
 }
