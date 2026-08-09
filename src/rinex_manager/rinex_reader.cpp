@@ -57,7 +57,6 @@ int RinexReader::get_int(size_t n)
 double RinexReader::get_19_char_double()
 {
     std::string chars = get_char(19);
-    double result = std::atof(chars.c_str());
     if (
         !(chars[0] == ' ' || chars[0] == '-') ||   // Signal or space
         !(std::isdigit(chars[1])) ||                // digit
@@ -71,7 +70,7 @@ double RinexReader::get_19_char_double()
         message << "Expecting a scientific number in: " << read_pos.to_str(19) << " but got: " << chars;
         throw std::invalid_argument(message.str());
     }
-    return result;
+    return std::atof(chars.c_str());
 }
 
 std::array<bool, 10> RinexReader::get_19_char_bits()

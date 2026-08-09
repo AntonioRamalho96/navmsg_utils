@@ -45,12 +45,12 @@ TEST(RinexReaterTests, BadWeatherNoFile)
 
 TEST(RinexReaterTests, BadWeatherNotSpace)
 {
-    auto rr = RinexReader(RINEX_4_PATH);
+    auto rr = RinexReader(get_rinex_4_path());
     rr.next_record();
     rr.get_char(); // skip ">"
     EXPECT_THROW(rr.skip_space(2), std::invalid_argument);
 
-    rr = RinexReader(RINEX_4_PATH);
+    rr = RinexReader(get_rinex_4_path());
     rr.next_record();
     rr.get_char(); // skip ">"
     EXPECT_NO_THROW(rr.skip_space());
@@ -59,7 +59,7 @@ TEST(RinexReaterTests, BadWeatherNotSpace)
 
 TEST(RinexReaterTests, BadWeatherNotInteger)
 {
-    auto rr = RinexReader(RINEX_4_PATH);
+    auto rr = RinexReader(get_rinex_4_path());
     rr.next_record();
     rr.get_char(6); // skip "> EPH "
     EXPECT_THROW(rr.get_int(3), std::invalid_argument); // G04 is not an integer
@@ -67,7 +67,7 @@ TEST(RinexReaterTests, BadWeatherNotInteger)
 
 TEST(RinexReaterTests, BadWeatherNotDouble)
 {
-    auto rr = RinexReader(RINEX_4_PATH);
+    auto rr = RinexReader(get_rinex_4_path());
     rr.next_record();
     rr.get_char(6); // skip "> EPH "
     EXPECT_THROW(rr.get_19_char_double(), std::invalid_argument); // " G04 LNAV" is not a double
