@@ -2,6 +2,12 @@ syntax = "proto3";
 
 package rinex_manager;
 
+enum RinexConstellation {
+  GPS    = 0;
+  GALILEO = 1;
+  UNKNOWN = 2;
+}
+
 enum RinexNavRecordType {
   GPS_LNAV     = 0;
   GALILEO_FNAV = 1;
@@ -69,9 +75,11 @@ message RinexNavRecord {
   double OMEGA_dot           = 27;
   double i_dot               = 28;
 
+  RinexConstellation constellation  = 29;
+
   // constellation-specific
   oneof record {
-    GpsLnavExtra gps     = 29;
-    GalileoExtra galileo = 30;
+    GpsLnavExtra gps     = 30;
+    GalileoExtra galileo = 31;
   }
 }

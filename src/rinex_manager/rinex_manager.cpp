@@ -8,8 +8,8 @@
 #include <vector>
 #include <array>
 
-#include "rinex_manager/constellation_type.hpp"
 #include "rinex_manager/rinex_reader.hpp"
+#include "rinex_record.pb.h"
 
 using namespace rinex_manager;
 
@@ -54,14 +54,14 @@ namespace {
         reader->skip_space();
     }
 
-    ConstellationType to_constellation_type(char c)
+    RinexConstellation to_constellation_type(char c)
     {
         switch (c) {
-            case 'G': return ConstellationType::GPS;
-            case 'E': return ConstellationType::GALILEO;
+            case 'G': return RinexConstellation::GPS;
+            case 'E': return RinexConstellation::GALILEO;
             default:
                 std::cout << "Unknown constellation type: " << c << std::endl;
-                return ConstellationType::OTHER;
+                return RinexConstellation::UNKNOWN;
         }
     }
 
@@ -106,6 +106,7 @@ namespace {
     RinexNavRecord parse_galileo_record_body(RinexReader *reader, bool is_inav)
     {
         RinexNavRecord r;
+        r.set_constellation(RinexConstellation::GALILEO);
         auto *gal = r.mutable_galileo();
 
         // line 1
@@ -180,6 +181,7 @@ namespace {
     RinexNavRecord parse_gps_lnav(RinexReader *reader)
     {
         RinexNavRecord r;
+        r.set_constellation(RinexConstellation::GALILEO);
         auto *gps = r.mutable_gps();
 
         // line 1
@@ -258,8 +260,8 @@ namespace {
         reader->skip_space();
 
         switch (constellation_type) {
-            case ConstellationType::GPS:     return parse_gps_record(reader);
-            case ConstellationType::GALILEO: return parse_galileo_record(reader);
+            case RinexConstellation::GPS:     return parse_gps_record(reader);
+            case RinexConstellation::GALILEO: return parse_galileo_record(reader);
             default:
                 std::cout << "Skipping unknown constellation type" << std::endl;
                 return {};

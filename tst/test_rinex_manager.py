@@ -18,10 +18,12 @@ def test_rinex_manager_loads_records():
 
     first = rinex_record_pb2.RinexNavRecord()
     first.ParseFromString(records[0])
+    first.constellation == rinex_record_pb2.GPS
     assert first.svid == 1
 
     second = rinex_record_pb2.RinexNavRecord()
     second.ParseFromString(records[1])
+    second.constellation == rinex_record_pb2.GALILEO
     assert second.svid == 12
 
 if __name__ == "__main__":
